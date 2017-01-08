@@ -1,0 +1,16 @@
+{
+  "jspm": {
+    "directories": {
+      "baseURL": "wwwroot"
+    },
+    "dependencies": {
+      "aurelia-bootstrapper": "npm:aurelia-bootstrapper@^2.0.1",
+      "aurelia-fetch-client": "npm:aurelia-fetch-client@^1.1.0",
+      "aurelia-framework": "npm:aurelia-framework@^1.0.8",
+      "bootstrap": "github:twbs/bootstrap@^3.3.7"
+    },
+    "devDependencies": {
+      "typescript": "npm:typescript@^2.0.7"
+    }
+  }
+}

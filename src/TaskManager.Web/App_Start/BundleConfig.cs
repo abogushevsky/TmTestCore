@@ -32,6 +32,12 @@ namespace TaskManager.Web
                 .IncludeDirectory("~/Scripts/app/services", "*.js", true)
                 .IncludeDirectory("~/Scripts/app/controllers", "*.js", true));
 
+            bundles.Add(new ScriptBundle("~/bundles/aurelia").Include(
+                      /*"~/Scripts/Aurelia/aurelia-core.min.js",
+                      "~/Scripts/Aurelia/aurelia-routing.min.js",
+                      "~/Scripts/Aurelia/config-typescript.js",*/
+                      "~/Scripts/Aurelia/system.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

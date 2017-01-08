@@ -10,10 +10,12 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/app")
+
+    @Scripts.Render("~/bundles/aurelia")
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="~/signalr/hubs"></script>
 </head>
-<body ng-app="app">
+<body aurelia-app="main">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
