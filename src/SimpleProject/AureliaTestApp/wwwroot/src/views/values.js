@@ -32,6 +32,9 @@ System.register(["aurelia-framework", "aurelia-fetch-client"], function (exports
                         this.values = arr;
                     });
                 }
+                onValueClick(value) {
+                    alert(value);
+                }
             };
             Values = __decorate([
                 aurelia_framework_1.inject(aurelia_fetch_client_1.HttpClient)

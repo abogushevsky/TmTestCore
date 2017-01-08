@@ -16,4 +16,8 @@ export class Values {
                 this.values = arr;
             });
     }
+
+    onValueClick(value: string) {
+        alert(value);
+    }
 }

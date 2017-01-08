@@ -1,10 +1,13 @@
 ﻿<template>
     <table class="table">
         <tr>
-            <th>Values</th>
+            <th>Values (test)</th>
         </tr>
         <tr repeat.for="value of values">
-            <td>${value}</td>
+            <td class="values" click.delegate="onValueClick(value)">${value}</td>
+            <!--td>
+                <button click.delegate="onValueClick(value)">Fire event!</button>
+            </td-->
         </tr>
     </table>
 </template>

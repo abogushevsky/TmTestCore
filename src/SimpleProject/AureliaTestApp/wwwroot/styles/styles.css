@@ -1,0 +1,8 @@
+﻿.values {
+    cursor: pointer;
+}
+
+.values:hover {
+    background-color: cadetblue;
+}
+
