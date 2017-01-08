@@ -16,7 +16,7 @@ namespace TaskManager.BusinessLayer
     /// <typeparam name="TKey">Тип первичного ключа</typeparam>
     public abstract class EntityServiceBase<TEntity, TKey> where TEntity: IEntityWithId<TKey>
     {
-        private readonly IRepository<TEntity, TKey> repository;
+        private readonly IRepository<TEntity, TKey> _repository;
 
         /// <summary>
         /// .ctor
@@ -26,7 +26,7 @@ namespace TaskManager.BusinessLayer
         {
             Contract.Requires(repository != null);
 
-            this.repository = repository;
+            this._repository = repository;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace TaskManager.BusinessLayer
         /// <returns>Результат выполнения действия над репозиторием</returns>
         protected Task<TResult> ExecOnRepositoryAsync<TResult>(Func<IRepository<TEntity, TKey>, Task<TResult>> asyncFunc)
         {
-            return ExecAsync(() => asyncFunc(this.repository));
+            return ExecAsync(() => asyncFunc(this._repository));
         }
     }
 }

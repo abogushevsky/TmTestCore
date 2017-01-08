@@ -9,7 +9,7 @@ namespace TaskManager.BusinessLayer
 {
     public class CategoriesService : EntityServiceBase<Category, int>, ICategoriesService
     {
-        private readonly IFilteredRepository<Category, CategoriesByUserFilter> categoriesByUsersFilter;
+        private readonly IFilteredRepository<Category, CategoriesByUserFilter> _categoriesByUsersFilter;
 
         /// <summary>
         /// .ctor
@@ -23,7 +23,7 @@ namespace TaskManager.BusinessLayer
             Contract.Requires(repository != null);
             Contract.Requires(categoriesByUsersFilter != null);
 
-            this.categoriesByUsersFilter = categoriesByUsersFilter;
+            this._categoriesByUsersFilter = categoriesByUsersFilter;
         }
 
         /// <summary>
@@ -31,49 +31,35 @@ namespace TaskManager.BusinessLayer
         /// </summary>
         /// <param name="userId">Идентификатор пользователя</param>
         /// <returns>Найденные категории пользователя или пустой массив</returns>
-        public async Task<Category[]> GetUserCategoriesAsync(string userId)
-        {
-            return await ExecAsync(() => this.categoriesByUsersFilter.FilterAsync(new CategoriesByUserFilter(userId)));
-        }
+        public async Task<Category[]> GetUserCategoriesAsync(string userId) => 
+            await ExecAsync(() => this._categoriesByUsersFilter.FilterAsync(new CategoriesByUserFilter(userId)));
 
         /// <summary>
         /// Получение категории по id
         /// </summary>
         /// <param name="id">Идентификатор категории</param>
         /// <returns>Найденную категорию или null</returns>
-        public async Task<Category> GetCategoryById(int id)
-        {
-            return await ExecOnRepositoryAsync(r => r.GetByIdAsync(id));
-        }
+        public async Task<Category> GetCategoryById(int id) => await ExecOnRepositoryAsync(r => r.GetByIdAsync(id));
 
         /// <summary>
         /// Добавление новой категории
         /// </summary>
         /// <param name="category">Новая категория</param>
         /// <returns>Идентификатор категории</returns>
-        public async Task<int> AddCategoryAsync(Category category)
-        {
-            return await ExecOnRepositoryAsync(r => r.CreateAsync(category));
-        }
+        public async Task<int> AddCategoryAsync(Category category) => await ExecOnRepositoryAsync(r => r.CreateAsync(category));
 
         /// <summary>
         /// Редактирование категории
         /// </summary>
         /// <param name="category">Измененная категория</param>
         /// <returns>Признак успеха операции</returns>
-        public async Task<bool> UpdateCategoryAsync(Category category)
-        {
-            return await ExecOnRepositoryAsync(r => r.UpdateAsync(category));
-        }
+        public async Task<bool> UpdateCategoryAsync(Category category) => await ExecOnRepositoryAsync(r => r.UpdateAsync(category));
 
         /// <summary>
         /// Удаление категории
         /// </summary>
         /// <param name="id">Идентификатор категории</param>
         /// <returns>Признак успеха операции</returns>
-        public async Task<bool> DeleteCategoryAsync(int id)
-        {
-            return await ExecOnRepositoryAsync(r => r.DeleteAsync(id));
-        }
+        public async Task<bool> DeleteCategoryAsync(int id) => await ExecOnRepositoryAsync(r => r.DeleteAsync(id));
     }
 }

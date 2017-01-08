@@ -14,8 +14,8 @@ namespace TaskManager.DataLayer.MsSql.Specialized
     public class SqlFilteredRepository<TEntity, TDto, TFilter> : SqlRepositoryBase, IFilteredRepository<TEntity, TFilter>
         where TDto : SqlDto
     {
-        private readonly SqlCommandInfo command;
-        private readonly IEntityDtoConverter<TEntity, TDto> converter;
+        private readonly SqlCommandInfo _command;
+        private readonly IEntityDtoConverter<TEntity, TDto> _converter;
 
         /// <summary>
         /// .ctor
@@ -32,8 +32,8 @@ namespace TaskManager.DataLayer.MsSql.Specialized
             Contract.Requires(!string.IsNullOrEmpty(connectionStringName));
             Contract.Requires(converter != null);
 
-            this.command = command;
-            this.converter = converter;
+            this._command = command;
+            this._converter = converter;
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace TaskManager.DataLayer.MsSql.Specialized
         /// <returns>Найденные сущности или пустой массив</returns>
         public async Task<TEntity[]> FilterAsync(TFilter filter)
         {
-            TDto[] result = (await UsingConnectionAsync<TDto>(this.command, filter)).ToArray();
-            return result.Select(this.converter.Convert).ToArray();
+            TDto[] result = (await UsingConnectionAsync<TDto>(this._command, filter)).ToArray();
+            return result.Select(this._converter.Convert).ToArray();
         }
     }
 }

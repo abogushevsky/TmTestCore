@@ -11,19 +11,19 @@ namespace TaskManager.DataLayer.MsSql
 {
     public abstract class SqlRepositoryBase
     {
-        private readonly string connectionString;
+        private readonly string _connectionString;
 
         protected SqlRepositoryBase(string connectionStringName)
         {
             Contract.Requires(!string.IsNullOrEmpty(connectionStringName));
 
             ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
-            this.connectionString = connectionStringSettings.ConnectionString;
+            this._connectionString = connectionStringSettings.ConnectionString;
         }
 
         protected async Task<IEnumerable<TResult>> UsingConnectionAsync<TResult>(SqlCommandInfo command, object param)
         {
-            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            using (SqlConnection connection = new SqlConnection(this._connectionString))
             {
                 SqlTransaction transaction = null;
                 try
@@ -40,7 +40,7 @@ namespace TaskManager.DataLayer.MsSql
                 catch (SqlException sqlEx)
                 {
                     if (transaction != null) transaction.Rollback();
-                    if (sqlEx.ErrorCode == ConcurrentUpdateException.ERROR_CODE)
+                    if (sqlEx.ErrorCode == ConcurrentUpdateException.ErrorCode)
                     {
                         throw new ConcurrentUpdateException();
                     }

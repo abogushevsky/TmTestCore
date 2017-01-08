@@ -17,7 +17,7 @@ namespace TaskManager.Web.Hubs
     {
         private static object _locker = new object();
         private static ITaskService _taskService;
-        private static readonly ConcurrentDictionary<string, ApplicationUser> _userConnectionsDictionary = new ConcurrentDictionary<string, ApplicationUser>();
+        private static readonly ConcurrentDictionary<string, ApplicationUser> UserConnectionsDictionary = new ConcurrentDictionary<string, ApplicationUser>();
 
         public TasksHub(ITaskService taskService)
         {
@@ -55,9 +55,9 @@ namespace TaskManager.Web.Hubs
             Contract.Requires(taskChangedDetails != null);
             Contract.Requires(connectionContext != null);
 
-            foreach (string key in _userConnectionsDictionary.Keys)
+            foreach (string key in UserConnectionsDictionary.Keys)
             {
-                ApplicationUser user = _userConnectionsDictionary[key];
+                ApplicationUser user = UserConnectionsDictionary[key];
                 if (user != null && taskChangedDetails.OwnerUserId == user.Id)
                 {
                     connectionContext.Client(key).taskUpdated(new TaskChangeModel(taskChangedDetails));
@@ -81,7 +81,7 @@ namespace TaskManager.Web.Hubs
                 throw new NotAuthorizedException("Пользователь не зарегистрирован в системе");
             }
             
-            _userConnectionsDictionary[Context.ConnectionId] = appUser;
+            UserConnectionsDictionary[Context.ConnectionId] = appUser;
 
             await base.OnConnected();
         }
@@ -100,7 +100,7 @@ namespace TaskManager.Web.Hubs
         public override Task OnDisconnected(bool stopCalled)
         {
             ApplicationUser removedUser = null;
-            _userConnectionsDictionary.TryRemove(Context.ConnectionId, out removedUser);
+            UserConnectionsDictionary.TryRemove(Context.ConnectionId, out removedUser);
             return base.OnDisconnected(stopCalled);
         }
     }

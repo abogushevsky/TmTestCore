@@ -19,8 +19,8 @@ namespace TaskManager.DataLayer.MsSql
         where TEntity : IEntityWithId<TKey> 
         where TDto : SqlDto
     {
-        private readonly IEntityDtoConverter<TEntity, TDto> converter;
-        private readonly CrudCommandsBundle commands;
+        private readonly IEntityDtoConverter<TEntity, TDto> _converter;
+        private readonly CrudCommandsBundle _commands;
 
         /// <summary>
         /// .ctor
@@ -35,8 +35,8 @@ namespace TaskManager.DataLayer.MsSql
             Contract.Requires(commands != null);
             Contract.Requires(!string.IsNullOrEmpty(connectionStringName));
 
-            this.converter = converter;
-            this.commands = commands;
+            this._converter = converter;
+            this._commands = commands;
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace TaskManager.DataLayer.MsSql
         /// </summary>
         public async Task<TEntity[]> GetAllAsync()
         {
-            TDto[] result = (await UsingConnectionAsync<TDto>(this.commands.GetAllCommand, null)).ToArray();
-            return result.Select(this.converter.Convert).ToArray();
+            TDto[] result = (await UsingConnectionAsync<TDto>(this._commands.GetAllCommand, null)).ToArray();
+            return result.Select(this._converter.Convert).ToArray();
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace TaskManager.DataLayer.MsSql
         /// <returns>Найденная сущность или null</returns>
         public async Task<TEntity> GetByIdAsync(TKey id)
         {
-            TDto[] result = (await UsingConnectionAsync<TDto>(this.commands.GetByIdCommand, new {Id = id})).ToArray();
-            return result.Any() ? this.converter.Convert(result.First()) : default(TEntity);
+            TDto[] result = (await UsingConnectionAsync<TDto>(this._commands.GetByIdCommand, new {Id = id})).ToArray();
+            return result.Any() ? this._converter.Convert(result.First()) : default(TEntity);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace TaskManager.DataLayer.MsSql
             try
             {
                 var result =
-                    (await UsingConnectionAsync<dynamic>(this.commands.CreateCommand, this.converter.Convert(entity).GetParametersForInsert()))
+                    (await UsingConnectionAsync<dynamic>(this._commands.CreateCommand, this._converter.Convert(entity).GetParametersForInsert()))
                         .ToArray();
 
                 if (result.Any())
@@ -94,8 +94,8 @@ namespace TaskManager.DataLayer.MsSql
         public async Task<bool> UpdateAsync(TEntity entity)
         {
             dynamic[] result = (await
-                UsingConnectionAsync<dynamic>(this.commands.UpdateCommand,
-                    this.converter.Convert(entity).GetParametersForUpdate())).ToArray();
+                UsingConnectionAsync<dynamic>(this._commands.UpdateCommand,
+                    this._converter.Convert(entity).GetParametersForUpdate())).ToArray();
             if (result.Any())
             {
                 int rowsAffected = (int) result.First().Result;
@@ -112,7 +112,7 @@ namespace TaskManager.DataLayer.MsSql
         /// <returns>true, если операция затронула > 0 сущностей. false в противном случае</returns>
         public async Task<bool> DeleteAsync(TKey id)
         {
-            var result = (await UsingConnectionAsync<dynamic>(this.commands.DeleteCommand, new { Id = id })).FirstOrDefault() > 0;
+            var result = (await UsingConnectionAsync<dynamic>(this._commands.DeleteCommand, new { Id = id })).FirstOrDefault() > 0;
             if (result.Any())
             {
                 int rowsAffected = (int)result.First().Result;

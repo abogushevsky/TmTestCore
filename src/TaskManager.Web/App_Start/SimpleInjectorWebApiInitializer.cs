@@ -24,7 +24,7 @@ namespace TaskManager.Web
     /// </summary>
     public static class SimpleInjectorWebApiInitializer
     {
-        private const string CONNECTION_STRING_NAME = "DefaultConnection";
+        private const string ConnectionStringName = "DefaultConnection";
 
         private static Container _container;
 
@@ -82,24 +82,24 @@ namespace TaskManager.Web
             _container.Register<IRepository<Category, int>>(() => new CrudSqlRepository<Category, int, CategoryDto>(
                 Resolve<IEntityDtoConverter<Category, CategoryDto>>(), 
                 categoryCommandsBundle, 
-                CONNECTION_STRING_NAME), Lifestyle.Singleton);
+                ConnectionStringName), Lifestyle.Singleton);
             _container.Register<IRepository<UserTask, int>>(() => new CrudSqlRepository<UserTask, int, UserTaskDto>(
                 Resolve<IEntityDtoConverter<UserTask, UserTaskDto>>(), 
                 taskCommandsBundle, 
-                CONNECTION_STRING_NAME), Lifestyle.Singleton);
+                ConnectionStringName), Lifestyle.Singleton);
 
             _container.Register<IFilteredRepository<Category, CategoriesByUserFilter>>(() => new SqlFilteredRepository<Category, CategoryDto, CategoriesByUserFilter>(
                 new SqlCommandInfo("sp_GetUserCategories", CommandType.StoredProcedure), 
-                CONNECTION_STRING_NAME,
+                ConnectionStringName,
                 Resolve<IEntityDtoConverter<Category, CategoryDto>>()), Lifestyle.Singleton);
 
             _container.Register<IFilteredRepository<UserTask, TasksByUserFilter>>(() => new SqlFilteredRepository<UserTask, UserTaskDto, TasksByUserFilter>(
                 new SqlCommandInfo("sp_GetUserTasks", CommandType.StoredProcedure),
-                CONNECTION_STRING_NAME,
+                ConnectionStringName,
                 Resolve<IEntityDtoConverter<UserTask, UserTaskDto>>()), Lifestyle.Singleton);
             _container.Register<IFilteredRepository<UserTask, TasksByCategoryFilter>>(() => new SqlFilteredRepository<UserTask, UserTaskDto, TasksByCategoryFilter>(
                 new SqlCommandInfo("sp_GetTasksByCategory", CommandType.StoredProcedure), 
-                CONNECTION_STRING_NAME,
+                ConnectionStringName,
                 Resolve<IEntityDtoConverter<UserTask, UserTaskDto>>()), Lifestyle.Singleton);
         }
 

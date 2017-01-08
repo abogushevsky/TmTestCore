@@ -47,7 +47,7 @@ namespace TaskManager.DataLayer.Common.Interfaces
     }
 
     [ContractClassFor(typeof(IRepository<,>))]
-    internal abstract class IRepositoryContracts<TEntity, Tkey> : IRepository<TEntity, Tkey> where TEntity : IEntityWithId<Tkey>
+    internal abstract class IRepositoryContracts<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : IEntityWithId<TKey>
     {
         public Task<TEntity[]> GetAllAsync()
         {
@@ -56,17 +56,17 @@ namespace TaskManager.DataLayer.Common.Interfaces
             throw new System.NotImplementedException();
         }
 
-        public Task<TEntity> GetByIdAsync(Tkey id)
+        public Task<TEntity> GetByIdAsync(TKey id)
         {
-            Contract.Requires(typeof(Tkey).IsValueType || id != null);
+            Contract.Requires(typeof(TKey).IsValueType || id != null);
 
             throw new System.NotImplementedException();
         }
         
-        public Task<Tkey> CreateAsync(TEntity entity)
+        public Task<TKey> CreateAsync(TEntity entity)
         {
             Contract.Requires(typeof(TEntity).IsValueType || entity != null);
-            Contract.Ensures(typeof(Tkey).IsValueType || Contract.Result<Tkey>() != null);
+            Contract.Ensures(typeof(TKey).IsValueType || Contract.Result<TKey>() != null);
 
             throw new System.NotImplementedException();
         }
@@ -77,9 +77,9 @@ namespace TaskManager.DataLayer.Common.Interfaces
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(Tkey id)
+        public Task<bool> DeleteAsync(TKey id)
         {
-            Contract.Requires(typeof(Tkey).IsValueType || id != null);
+            Contract.Requires(typeof(TKey).IsValueType || id != null);
 
             throw new System.NotImplementedException();
         }

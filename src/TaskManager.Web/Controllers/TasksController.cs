@@ -14,13 +14,13 @@ namespace TaskManager.Web.Controllers
     [Authorize]
     public class TasksController : TaskManagerApiControllerBase
     {
-        private readonly ITaskService taskService;
+        private readonly ITaskService _taskService;
 
         public TasksController(ITaskService taskService)
         {
             Contract.Requires(taskService != null);
 
-            this.taskService = taskService;
+            this._taskService = taskService;
         }
 
         // GET api/<controller>
@@ -29,14 +29,14 @@ namespace TaskManager.Web.Controllers
             ApplicationUser currentUser = await GetCurrentUser();
             if (currentUser == null)
                 return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "");
-            UserTask[] tasks = await this.taskService.GetAllUserTasksAsync(currentUser.Id);
+            UserTask[] tasks = await this._taskService.GetAllUserTasksAsync(currentUser.Id);
             return this.Request.CreateResponse(tasks.Select(t => new TaskListItemModel(t)));
         }
 
         // GET api/<controller>/5
         public async Task<HttpResponseMessage> Get(int id)
         {
-            UserTask task = await this.taskService.GetTaskByIdAsync(id);
+            UserTask task = await this._taskService.GetTaskByIdAsync(id);
             if (task == null)
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, Resources.TaskNotFound);
             return this.Request.CreateResponse(new TaskModel(task));
@@ -47,7 +47,7 @@ namespace TaskManager.Web.Controllers
         {
             if (task == null)
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Resources.DataNotSet);
-            int id = await this.taskService.AddTaskAsync(task.ToUserTask(await GetCurrentUser()));
+            int id = await this._taskService.AddTaskAsync(task.ToUserTask(await GetCurrentUser()));
             return this.Request.CreateResponse(id);
         }
 
@@ -57,7 +57,7 @@ namespace TaskManager.Web.Controllers
             if (task == null)
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Resources.DataNotSet);
 
-            bool result = await this.taskService.UpdateTaskAsync(task.ToUserTask(await GetCurrentUser()));
+            bool result = await this._taskService.UpdateTaskAsync(task.ToUserTask(await GetCurrentUser()));
             if (!result)
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Resources.DataSaveError);
 
@@ -68,7 +68,7 @@ namespace TaskManager.Web.Controllers
         public async Task<HttpResponseMessage> Delete(int id)
         {
             ApplicationUser currentUser = await GetCurrentUser();
-            bool result = await this.taskService.DeleteTaskAsync(id, currentUser.Id);
+            bool result = await this._taskService.DeleteTaskAsync(id, currentUser.Id);
             if (!result)
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Resources.DataRemoveError);
 

@@ -10,8 +10,8 @@ namespace TaskManager.BusinessLayer
 {
     public class TaskService : EntityServiceBase<UserTask, int>, ITaskService
     {
-        private readonly IFilteredRepository<UserTask, TasksByUserFilter> tasksByUserFilter;
-        private readonly IFilteredRepository<UserTask, TasksByCategoryFilter> tasksByCategoryFilter;
+        private readonly IFilteredRepository<UserTask, TasksByUserFilter> _tasksByUserFilter;
+        private readonly IFilteredRepository<UserTask, TasksByCategoryFilter> _tasksByCategoryFilter;
 
         /// <summary>
         /// .ctor
@@ -28,8 +28,8 @@ namespace TaskManager.BusinessLayer
             Contract.Requires(tasksByUserFilter != null);
             Contract.Requires(tasksByCategoryFilter != null);
 
-            this.tasksByUserFilter = tasksByUserFilter;
-            this.tasksByCategoryFilter = tasksByCategoryFilter;
+            _tasksByUserFilter = tasksByUserFilter;
+            _tasksByCategoryFilter = tasksByCategoryFilter;
         }
 
         public event EventHandler<TaskChangedEventArgs> TaskChanged;
@@ -39,30 +39,23 @@ namespace TaskManager.BusinessLayer
         /// </summary>
         /// <param name="userId">Идентификатор пользователя</param>
         /// <returns>Найденные задачи пользователя, или пустой массив</returns>
-        public async Task<UserTask[]> GetAllUserTasksAsync(string userId)
-        {
-            return await ExecAsync(() => this.tasksByUserFilter.FilterAsync(new TasksByUserFilter(userId)));
-        }
+        public async Task<UserTask[]> GetAllUserTasksAsync(string userId) => 
+            await ExecAsync(() => _tasksByUserFilter.FilterAsync(new TasksByUserFilter(userId)));
 
         /// <summary>
         /// Получение всех задач по категории
         /// </summary>
         /// <param name="categoryId">Идентификатор категории</param>
         /// <returns>Найденные задачи по категории, или пустой массив</returns>
-        public async Task<UserTask[]> GetTasksByCategoryAsync(int categoryId)
-        {
-            return await ExecAsync(() => this.tasksByCategoryFilter.FilterAsync(new TasksByCategoryFilter(categoryId)));
-        }
+        public async Task<UserTask[]> GetTasksByCategoryAsync(int categoryId) => 
+            await ExecAsync(() => _tasksByCategoryFilter.FilterAsync(new TasksByCategoryFilter(categoryId)));
 
         /// <summary>
         /// Получение задачи по id
         /// </summary>
         /// <param name="id">Идентификатор задачи</param>
         /// <returns>Найденная задача или null</returns>
-        public async Task<UserTask> GetTaskByIdAsync(int id)
-        {
-            return await ExecOnRepositoryAsync(r => r.GetByIdAsync(id));
-        }
+        public async Task<UserTask> GetTaskByIdAsync(int id) => await ExecOnRepositoryAsync(r => r.GetByIdAsync(id));
 
         /// <summary>
         /// Добавление новой задачи
@@ -101,10 +94,6 @@ namespace TaskManager.BusinessLayer
             return result;
         }
 
-        protected virtual void OnTaskChanged(TaskChangedEventArgs e)
-        {
-            if (TaskChanged != null)
-                TaskChanged(this, e);
-        }
+        protected virtual void OnTaskChanged(TaskChangedEventArgs e) => TaskChanged?.Invoke(this, e);
     }
 }
