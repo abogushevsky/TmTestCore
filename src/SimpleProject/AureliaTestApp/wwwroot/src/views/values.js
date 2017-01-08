@@ -24,9 +24,12 @@ System.register(["aurelia-framework", "aurelia-fetch-client"], function (exports
                     this.values = [];
                 }
                 activate() {
-                    return this.http.fetch("http://localhost:YOURPORTNUMBER/api/values").
+                    return this.http.fetch("http://localhost:49877/api/values").
                         then(response => response.json()).then(data => {
-                        //this.values = data.text;
+                        let arr = new Array();
+                        arr.push("first");
+                        arr.push("second");
+                        this.values = arr;
                     });
                 }
             };
