@@ -1,0 +1,73 @@
+﻿<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            <label for="title">Название</label>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="title" ng-model="task.Title"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="dueDate">Выполнить до</label>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="date" class="form-control" id="dueDate" ng-model="task.DueDate"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <div class="form-group">
+            <label for="category">Категория</label>
+            <div class="row">
+                <div class="col-md-12">
+                    <select class="form-control selectpicker" id="category" ng-model="task.Category.Id" convert-to-number>
+                        <option ng-repeat="category in categories | orderBy: 'Name'" value="{{category.Id}}">
+                            {{category.Name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7 text-left">
+        <div class="form-group" ng-show="catControlVisible">
+            <label for="newCatName">Новая категория</label>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="newCatName" ng-model="newCatName"/>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:void(0)" class="cat-button" ng-click="setCatControlVisibility(true)" ng-show="!catControlVisible" title="Добавить категорию">
+            <i class="glyphicon glyphicon-plus"></i>
+        </a>
+        <a href="javascript:void(0)" class="cat-button" ng-click="addCategory()" ng-show="catControlVisible" title="Добавить категорию">
+            <i class="glyphicon glyphicon-ok"></i>
+        </a>
+        <a href="javascript:void(0)" class="cat-button" ng-click="setCatControlVisibility(false)" ng-show="catControlVisible" title="Отмена">
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="details">Описание</label>
+            <div class="row">
+                <div class="col-md-12">
+                    <textarea rows="2" class="form-control" id="details" ng-model="task.Details"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form>
+    <button type="submit" class="btn btn-primary" ng-click="onSave()">Сохранить</button>
+    <a class="btn btn-default" ui-sref="main">Отмена</a>
+</form>

@@ -1,0 +1,31 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="userName">Имя пользователя</label>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="userName" ng-model="userName" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="password" class="form-control" id="password" ng-model="password"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row error" ng-show="showError">
+    <div class="col-md-12">{{errorText}}</div>
+</div>
+<form>
+    <button type="button" class="btn btn-primary" ng-click="login()">Войти</button>
+    <a class="btn btn-default text-left" ui-sref="register">Зарегистрироваться</a>
+</form>
